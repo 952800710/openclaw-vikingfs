@@ -1,0 +1,115 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 0 * * 0'  # 每周日运行一次
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install pytest pytest-cov black isort
+
+    - name: Check code formatting with black
+      run: |
+        black --check viking/
+
+    - name: Check import sorting with isort
+      run: |
+        isort --check-only viking/
+
+    - name: Run tests with pytest
+      run: |
+        # 先运行现有测试
+        python -m pytest viking/tools/test_vikingfs.py -v
+        
+        # 如果tests目录存在，运行所有测试
+        if [ -d "tests" ]; then
+          python -m pytest tests/ -v --cov=viking --cov-report=xml
+        fi
+
+    - name: Upload coverage to Codecov
+      if: ${{ success() }}
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+
+  integration-test:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+
+    - name: Run integration tests
+      run: |
+        # 运行桥接器测试
+        python viking/integration/bridge_v2.py test
+        
+        # 运行演示脚本
+        python viking/tools/real_demo.py --test
+        
+        # 检查项目结构
+        python -c "
+        import os
+        required_dirs = ['viking', 'viking/integration', 'viking/tools', 'viking/memory']
+        for d in required_dirs:
+            assert os.path.exists(d), f'Missing directory: {d}'
+        print('✓ Project structure is valid')
+        "
+
+    - name: Verify memory system
+      run: |
+        # 检查分层记忆系统
+        python -c "
+        import os
+        import json
+        
+        # 检查记忆目录结构
+        memory_dirs = ['L0', 'L1', 'L2']
+        for d in memory_dirs:
+            path = os.path.join('viking', 'memory', d)
+            assert os.path.exists(path), f'Missing memory layer: {d}'
+        
+        # 检查配置文件
+        config_files = ['bridge_config.json', 'viking-config.json']
+        for f in config_files:
+            path = os.path.join('viking', 'config', f)
+            assert os.path.exists(path), f'Missing config file: {f}'
+            
+        print('✓ Memory system and config files are valid')
+        "

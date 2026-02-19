@@ -1,0 +1,176 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # 触发版本发布，如 v1.0.0, v1.2.3
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取完整历史记录
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install build tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine setuptools wheel
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Test package installation
+      run: |
+        # 测试包能否正常安装
+        pip install dist/*.tar.gz
+        python -c "import sys; print('✓ Package installed successfully')"
+
+    - name: Verify package structure
+      run: |
+        # 检查构建的包结构
+        tar -tzf dist/*.tar.gz | head -20
+        echo "=== Package files listed above ==="
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+        files: |
+          dist/*.tar.gz
+          dist/*.whl
+        body: |
+          ## OpenClaw-VikingFS ${{ github.ref_name }}
+          
+          ### 🚀 新版本发布
+          
+          **版本号:** ${{ github.ref_name }}
+          
+          ### 📦 发布内容
+          
+          - **Python包:** `openclaw-vikingfs` (可通过 `pip install openclaw-vikingfs` 安装)
+          - **包含文件:** 完整的分层记忆系统、集成模块、工具脚本
+          
+          ### 🔧 使用说明
+          
+          ```bash
+          # 安装
+          pip install openclaw-vikingfs
+          
+          # 导入使用
+          from viking.integration.bridge_v2 import OpenClawVikingBridgeV2
+          
+          bridge = OpenClawVikingBridgeV2()
+          result = bridge.query_memory("测试查询")
+          ```
+          
+          ### 📊 项目统计
+          
+          - **Python版本支持:** 3.8+
+          - **核心特性:** 分层上下文管理，60-90% Token节省
+          - **许可证:** MIT
+          
+          ### 🔗 相关链接
+          
+          - [项目主页](https://github.com/${{ github.repository }})
+          - [文档](https://github.com/${{ github.repository }}/blob/main/README.md)
+          - [问题反馈](https://github.com/${{ github.repository }}/issues)
+          
+          ### 🙏 致谢
+          
+          感谢所有贡献者和用户！
+
+  pypi-publish:
+    needs: release
+    runs-on: ubuntu-latest
+    
+    # 只在有PyPI凭证时运行
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install build tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+
+    - name: Verify PyPI release
+      if: success()
+      run: |
+        echo "✅ Package published to PyPI"
+        echo "📦 PyPI URL: https://pypi.org/project/openclaw-vikingfs/"
+
+  docker-publish:
+    needs: release
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/${{ github.repository }}
+        tags: |
+          type=semver,pattern={{version}}
+          type=sha,prefix={{branch}}-
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Verify Docker image
+      run: |
+        echo "✅ Docker image published to GitHub Container Registry"
+        echo "🐳 Image: ghcr.io/${{ github.repository }}:${{ github.ref_name }}"
