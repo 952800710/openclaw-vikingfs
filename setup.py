@@ -17,9 +17,9 @@ setup(
     description="基于OpenViking思想的轻量级上下文管理框架，专为OpenClaw优化设计",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/tonysatrk/openclaw-vikingfs",
-    packages=find_packages(where="viking"),
-    package_dir={"": "viking"},
+    url="https://github.com/952800710/openclaw-vikingfs",
+    packages=find_packages(where=".", exclude=["tests", "tests.*", "config", "config.*"]),
+    package_dir={"": "."},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",

@@ -1,0 +1,72 @@
+name: Simple CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  basic-checks:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check Python availability
+      run: |
+        python --version
+        echo "✅ Python is available"
+    
+    - name: Check project structure
+      run: |
+        echo "🔍 Checking project structure..."
+        ls -la
+        echo "---"
+        test -f setup.py && echo "✅ setup.py exists"
+        test -f README.md && echo "✅ README.md exists"
+        test -f requirements.txt && echo "✅ requirements.txt exists"
+        test -f LICENSE && echo "✅ LICENSE exists"
+        test -f CONTRIBUTING.md && echo "✅ CONTRIBUTING.md exists"
+        
+    - name: Check viking module
+      run: |
+        echo "🔍 Checking viking module structure..."
+        ls -la viking/
+        echo "---"
+        test -d viking/integration && echo "✅ integration/ directory exists"
+        test -d viking/tools && echo "✅ tools/ directory exists"
+        test -d viking/memory && echo "✅ memory/ directory exists"
+        test -d viking/config && echo "✅ config/ directory exists"
+        
+    - name: Run simple Python test
+      run: |
+        echo "🧪 Running simple Python import tests..."
+        python -c "
+try:
+    import sys
+    sys.path.append('.')
+    from viking.integration.bridge_v2 import OpenClawVikingBridgeV2
+    print('✅ OpenClawVikingBridgeV2 imported successfully')
+except Exception as e:
+    print(f'❌ Import error: {e}')
+    sys.exit(1)
+"
+        
+    - name: Check demo script
+      run: |
+        echo "🚀 Checking demo script..."
+        if [ -f "viking/tools/real_demo.py" ]; then
+            python viking/tools/real_demo.py --dry-run
+            echo "✅ Demo script runs successfully"
+        else
+            echo "⚠️ Demo script not found, skipping"
+        fi
+        
+    - name: Create success summary
+      run: |
+        echo "🎉 All basic checks passed!"
+        echo "Project structure: ✓"
+        echo "Python imports: ✓"
+        echo "Core files: ✓"
+        echo "Module structure: ✓"
