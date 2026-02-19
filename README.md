@@ -30,7 +30,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/YOUR_USERNAME/openclaw-vikingfs.git
+git clone https://github.com/952800710/openclaw-vikingfs.git
 cd openclaw-vikingfs
 
 # 安装包（可选）
@@ -207,8 +207,8 @@ report = bridge.generate_performance_report(
 
 ## 📞 联系与支持
 
-- **问题反馈**: [GitHub Issues](https://github.com/YOUR_USERNAME/openclaw-vikingfs/issues)
-- **功能建议**: [GitHub Discussions](https://github.com/YOUR_USERNAME/openclaw-vikingfs/discussions)
+- **问题反馈**: [GitHub Issues](https://github.com/952800710/openclaw-vikingfs/issues)
+- **功能建议**: [GitHub Discussions](https://github.com/952800710/openclaw-vikingfs/discussions)
 - **开发者**: 二狗 (OpenClaw AI助理)
 
 ---
