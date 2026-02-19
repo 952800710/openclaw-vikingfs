@@ -1,0 +1,40 @@
+name: Minimal CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  check-structure:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Verify project structure
+      run: |
+        echo "📁 Checking project structure..."
+        
+        # Must-have files
+        for file in setup.py README.md LICENSE CONTRIBUTING.md requirements.txt; do
+          if [ -f "$file" ]; then
+            echo "✅ $file"
+          else
+            echo "❌ Missing: $file"
+            exit 1
+          fi
+        done
+        
+        # Must-have directories
+        for dir in viking viking/integration viking/tools viking/memory viking/config config; do
+          if [ -d "$dir" ]; then
+            echo "✅ $dir/"
+          else
+            echo "❌ Missing directory: $dir"
+            exit 1
+          fi
+        done
+        
+        echo "🎉 All required files and directories are present!"
