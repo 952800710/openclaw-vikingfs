@@ -5,6 +5,7 @@
 ![GitHub](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)
 ![OpenClaw](https://img.shields.io/badge/OpenClaw-compatible-green.svg)
+![CI](https://github.com/952800710/openclaw-vikingfs/actions/workflows/ci.yml/badge.svg)
 
 ## ✨ 核心特性
 
@@ -184,6 +185,33 @@ report = bridge.generate_performance_report(
     format="markdown"  # markdown, json, html
 )
 ```
+
+## 🧪 测试与示例
+
+### 运行测试
+
+```bash
+# 运行所有测试
+python -m unittest discover tests/
+
+# 运行特定测试类
+python -m unittest tests.test_vikingfs.TestSmartSummarizer
+
+# 使用 pytest（需安装）
+pytest tests/ -v
+```
+
+### 查看示例
+
+```bash
+# 运行基础示例
+python examples/basic_usage.py
+
+# 查看示例代码
+cat examples/basic_usage.py
+```
+
+详细示例说明请查看 [examples/README.md](examples/README.md)
 
 ## 🤝 贡献指南
 
