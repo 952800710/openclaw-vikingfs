@@ -1,0 +1,12 @@
+{
+  "total_files": 1,
+  "migrated_files": 1,
+  "failed_files": 0,
+  "total_original_size": 2947,
+  "total_compressed_size_L0": 96,
+  "total_compressed_size_L1": 820,
+  "start_time": "2026-02-19T08:30:22.512404",
+  "end_time": "2026-02-19T08:30:22.528944",
+  "compression_ratio_L0": 0.032575500508992196,
+  "compression_ratio_L1": 0.27824906684764167
+}

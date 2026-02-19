@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "mode": "hybrid",
+  "auto_summarize": true,
+  "cache_enabled": true,
+  "token_optimization": true,
+  "monitoring": true,
+  "query_classifier": true
+}

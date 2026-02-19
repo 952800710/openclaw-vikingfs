@@ -1,0 +1,154 @@
+{
+  "test_date": "2026-02-19T08:32:55.905182",
+  "total_queries": 7,
+  "average_token_saving": 0.7888894275049687,
+  "average_response_time_ms": 0.8657142857142858,
+  "query_type_stats": {
+    "factual": {
+      "count": 4,
+      "total_saving": 3.2602646759416354
+    },
+    "administrative": {
+      "count": 2,
+      "total_saving": 1.9592806243637597
+    },
+    "creative": {
+      "count": 1,
+      "total_saving": 0.30268069222938576
+    }
+  },
+  "detailed_results": [
+    {
+      "query": "今天是什么日期？",
+      "query_types": [
+        "factual"
+      ],
+      "loaded_tiers": [
+        "L0",
+        "L1"
+      ],
+      "content_size_bytes": 545,
+      "response_time_ms": 2.89,
+      "token_info": {
+        "vikingfs_tokens": 136.25,
+        "traditional_tokens": 736.75,
+        "token_saving_percentage": 0.8150661689854088,
+        "token_saving_absolute": 600.5,
+        "estimated_cost_saving_usd": 0.0006005
+      }
+    },
+    {
+      "query": "我安装了哪些技能？",
+      "query_types": [
+        "factual"
+      ],
+      "loaded_tiers": [
+        "L0",
+        "L1"
+      ],
+      "content_size_bytes": 545,
+      "response_time_ms": 0.72,
+      "token_info": {
+        "vikingfs_tokens": 136.25,
+        "traditional_tokens": 736.75,
+        "token_saving_percentage": 0.8150661689854088,
+        "token_saving_absolute": 600.5,
+        "estimated_cost_saving_usd": 0.0006005
+      }
+    },
+    {
+      "query": "Tony的工作风格是什么？",
+      "query_types": [
+        "factual"
+      ],
+      "loaded_tiers": [
+        "L0",
+        "L1"
+      ],
+      "content_size_bytes": 545,
+      "response_time_ms": 0.31,
+      "token_info": {
+        "vikingfs_tokens": 136.25,
+        "traditional_tokens": 736.75,
+        "token_saving_percentage": 0.8150661689854088,
+        "token_saving_absolute": 600.5,
+        "estimated_cost_saving_usd": 0.0006005
+      }
+    },
+    {
+      "query": "OpenViking的核心思想有哪些？",
+      "query_types": [
+        "factual"
+      ],
+      "loaded_tiers": [
+        "L0",
+        "L1"
+      ],
+      "content_size_bytes": 545,
+      "response_time_ms": 1.22,
+      "token_info": {
+        "vikingfs_tokens": 136.25,
+        "traditional_tokens": 736.75,
+        "token_saving_percentage": 0.8150661689854088,
+        "token_saving_absolute": 600.5,
+        "estimated_cost_saving_usd": 0.0006005
+      }
+    },
+    {
+      "query": "给我一个关于当前工作的完整报告",
+      "query_types": [
+        "administrative"
+      ],
+      "loaded_tiers": [
+        "L0"
+      ],
+      "content_size_bytes": 60,
+      "response_time_ms": 0.33,
+      "token_info": {
+        "vikingfs_tokens": 15.0,
+        "traditional_tokens": 736.75,
+        "token_saving_percentage": 0.9796403121818799,
+        "token_saving_absolute": 721.75,
+        "estimated_cost_saving_usd": 0.00072175
+      }
+    },
+    {
+      "query": "我们应该如何改进这个系统？",
+      "query_types": [
+        "creative"
+      ],
+      "loaded_tiers": [
+        "L0",
+        "L1",
+        "L2"
+      ],
+      "content_size_bytes": 2055,
+      "response_time_ms": 0.43,
+      "token_info": {
+        "vikingfs_tokens": 513.75,
+        "traditional_tokens": 736.75,
+        "token_saving_percentage": 0.30268069222938576,
+        "token_saving_absolute": 223.0,
+        "estimated_cost_saving_usd": 0.000223
+      }
+    },
+    {
+      "query": "检查系统状态",
+      "query_types": [
+        "administrative"
+      ],
+      "loaded_tiers": [
+        "L0"
+      ],
+      "content_size_bytes": 60,
+      "response_time_ms": 0.16,
+      "token_info": {
+        "vikingfs_tokens": 15.0,
+        "traditional_tokens": 736.75,
+        "token_saving_percentage": 0.9796403121818799,
+        "token_saving_absolute": 721.75,
+        "estimated_cost_saving_usd": 0.00072175
+      }
+    }
+  ]
+}

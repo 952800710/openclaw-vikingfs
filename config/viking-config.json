@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "name": "OpenClaw-VikingFS",
+  "description": "基于OpenViking思想的统一上下文管理系统",
+  "created_at": "2026-02-19T08:28:00Z",
+  "modified_at": "2026-02-19T08:28:00Z",
+  
+  "hierarchy": {
+    "memory": {
+      "L0": "摘要层 (50-100字符)",
+      "L1": "概览层 (200-500字符)",
+      "L2": "详细层 (原始内容)"
+    },
+    "skills": {
+      "meta": "技能元数据 (SKILL.md摘要)",
+      "source": "技能源代码",
+      "docs": "使用文档和示例"
+    },
+    "resources": {
+      "files": "文件资源",
+      "urls": "网页链接资源",
+      "images": "图片资源"
+    },
+    "projects": {
+      "current": "当前项目",
+      "archive": "归档项目"
+    }
+  },
+  
+  "compression_rules": {
+    "L0_max_chars": 100,
+    "L1_max_chars": 500,
+    "L2_full_content": true,
+    "auto_summary": true,
+    "key_points_extraction": true
+  },
+  
+  "token_optimization": {
+    "default_max_tokens": 4000,
+    "tier_loading": ["L0", "L1"],
+    "dynamic_loading": true,
+    "cache_enabled": true,
+    "cache_ttl_hours": 24
+  },
+  
+  "query_classification": {
+    "factual": ["L0", "L1"],
+    "creative": ["L0", "L1", "L2"],
+    "administrative": ["L0"],
+    "analytical": ["L0", "L1"]
+  }
+}
